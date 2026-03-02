@@ -1,10 +1,13 @@
 package com.example.demo.studentas;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name ="customer")//куда в postgres сохранять
-public class Customer {
 
+@Entity
+@Table(name ="customer")//where to save in postgress
+
+public class Customer {
     @Id
     @SequenceGenerator(
             name="customer_sequence",sequenceName ="customer_sequence",allocationSize = 1
@@ -20,12 +23,7 @@ public class Customer {
     @Column(name = "email",nullable = false,unique = true)
     private String email;
 
-    public Customer(Long id, String login, String password, String email){//constructor
-        this.id=id;
-        this.login=login;
-        this.password=password;
-        this.email=email;
-    }
+
     public Customer(String login, String password, String email){//constructor without id,cause
         // id will generate by sequence
         this.login=login;
