@@ -2,7 +2,11 @@ package com.example.demo.studentas;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,17 +15,27 @@ import java.util.Optional;
 public class CustServ {
 
     private final CustomerRepo customerRepo;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustServ(CustomerRepo customerRepo) {
+    public CustServ(CustomerRepo customerRepo, BCryptPasswordEncoder passwordEncoder) {
         this.customerRepo = customerRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public void addNewCust(Customer customer) {
+    public void PostCust(Customer customer) {
         Optional<Customer> customerOptional = customerRepo.findByEmail(customer.getEmail());
-        if (customerOptional.isPresent()) {
-            throw new IllegalStateException("Email was taken");
+        Optional<Customer> customerOptional2=customerRepo.findByLogin(customer.getLogin());
+        if (customerOptional.isPresent()||customerOptional2.isPresent()) {
+            throw new IllegalStateException("Email was taken or login");
         }
+        if (customer.getLogin()==null||customer.getLogin().isEmpty()||
+                customer.getPassword()==null||customer.getPassword().isEmpty()||
+                customer.getEmail()==null||customer.getEmail().isEmpty()) {
+            throw new IllegalStateException("Email,login or password are empty");
+        }
+        String passwordEnc=passwordEncoder.encode(customer.getPassword());
+        customer.setPassword(passwordEnc);
         customerRepo.save(customer);
     }
 
@@ -35,36 +49,56 @@ public class CustServ {
 
     @Transactional
     public void putCust(Long customerId, Customer customer) {
-        Customer customerReal = customerRepo.findById(customerId).orElseThrow(() -> new IllegalStateException("Customer with id "
-                + customerId + " does not exist"));
+        Customer customerReal = customerRepo.findById(customerId)
+                .orElseThrow(() -> new IllegalStateException("Customer with id " + customerId + " does not exist"));
+
+        if (customer.getLogin() == null || customer.getLogin().isEmpty() ||
+                customer.getEmail() == null || customer.getEmail().isEmpty() ||
+                customer.getPassword() == null || customer.getPassword().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "PUT requires all fields: login, email, and password");
+        }
+
+        if (!customer.getLogin().equals(customerReal.getLogin()) && customerRepo.existsByLogin(customer.getLogin())) {
+            throw new IllegalStateException("Login taken");
+        }
+
         customerReal.setLogin(customer.getLogin());
         customerReal.setEmail(customer.getEmail());
-        customerReal.setPassword(customer.getPassword());
+        customerReal.setPassword(passwordEncoder.encode(customer.getPassword()));
     }
 
     @Transactional
     public void patchCust(Long customerId, Customer customer) {
-        Customer customerReal = customerRepo.findById(customerId).
-                orElseThrow(() -> new IllegalStateException("Customer with id "
-                        + customerId + " does not exist"));
+        Customer customerReal = customerRepo.findById(customerId)
+                .orElseThrow(() -> new IllegalStateException("Customer with id " + customerId + " does not exist"));
 
-        if (customer.getLogin() != null) {
+        if (customer.getLogin() != null && !customer.getLogin().isEmpty()) {
+            if (!customer.getLogin().equals(customerReal.getLogin()) && customerRepo.existsByLogin(customer.getLogin())) {
+                throw new IllegalStateException("Login " + customer.getLogin() + " is already taken");
+            }
             customerReal.setLogin(customer.getLogin());
         }
-
-        if (customer.getEmail() != null) {
+        if (customer.getEmail() != null && !customer.getEmail().isEmpty()) {
+            if (!customer.getEmail().equals(customerReal.getEmail()) && customerRepo.existsByEmail(customer.getEmail())) {
+                throw new IllegalStateException("Email " + customer.getEmail() + " is already taken");
+            }
             customerReal.setEmail(customer.getEmail());
         }
-        if (customer.getPassword() != null) {
-            customerReal.setPassword(customer.getPassword());
-        }
 
+        if (customer.getPassword() != null && !customer.getPassword().isEmpty()) {
+            String passwordEnc = passwordEncoder.encode(customer.getPassword());
+            customerReal.setPassword(passwordEnc);
+        }
     }
 
-    public Customer getCust(String customerEmail) {
-        return customerRepo.findByEmail(customerEmail).
-                orElseThrow(() -> new IllegalStateException("Customer with Email "
-                        + customerEmail + " does not exist"));
+    public boolean authorized(String login,String password) {
+        Customer CheckCust=customerRepo.findByLogin(login)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong Login"));
+        if(passwordEncoder.matches(password,CheckCust.getPassword())){
+            return true;
+        }
+        else
+            return false;
     }
 }
 

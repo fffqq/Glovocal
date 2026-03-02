@@ -17,6 +17,15 @@ public interface CustomerRepo extends JpaRepository<Customer,Long> {
     @Query("SELECT c from Customer c where c.email=?1")
     Optional<Customer> findByEmail(String email);
 
+    @Query("SELECT c from Customer c where c.login=:login")
+    Optional<Customer> findByLogin(String login);
+
+
+    boolean existsByEmail(String email);
+    boolean existsByLogin(String login);
+    boolean existsByPassword(String password);
+
+
     // List<Customer> login(String login);
 }
 
