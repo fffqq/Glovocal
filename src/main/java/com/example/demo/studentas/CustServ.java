@@ -2,8 +2,8 @@ package com.example.demo.studentas;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.Cookie;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -91,14 +91,39 @@ public class CustServ {
         }
     }
 
-    public boolean authorized(String login,String password) {
+   /* public List<Cookie> authorized(String login,String password) {
         Customer CheckCust=customerRepo.findByLogin(login)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong Login"));
-        if(passwordEncoder.matches(password,CheckCust.getPassword())){
-            return true;
+        String passwordCheckCust = CheckCust.getPassword();
+        if(passwordCheckCust!=null&&!passwordCheckCust.isEmpty()){
+
+            Cookie loginCookie=new Cookie("user_login",CheckCust.getLogin());
+            loginCookie.setMaxAge(60*60*24);
+            loginCookie.setPath("/");
+
+            Cookie passwordCookie=new Cookie("user_password",CheckCust.getPassword());
+            passwordCookie.setMaxAge(60*60*24);
+            passwordCookie.setPath("/");
+
+            if(passwordEncoder.matches(password,passwordCheckCust)){
+                return List.of(loginCookie,passwordCookie);
+            }
+            else
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong password");
         }
-        else
-            return false;
-    }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Fill the password Box");
+        }
+        */
+   public boolean authorized(String login,String password) {
+       Customer CheckCust=customerRepo.findByLogin(login)
+               .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong Login"));
+       if(passwordEncoder.matches(password,CheckCust.getPassword())){
+           return true;
+       }
+       else
+           return false;
+   }
+
+
 }
 

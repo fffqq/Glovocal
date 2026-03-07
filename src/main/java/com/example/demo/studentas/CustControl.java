@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:63343")
+@CrossOrigin(origins = "http://localhost:63343", allowCredentials = "true")
 @RequestMapping(path="api/v1/glovo")
 public class CustControl {
     private final CustServ custServ;
@@ -40,6 +40,8 @@ public class CustControl {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Login or password");
 
     }
+
+
 
 
 }
