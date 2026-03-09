@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:63343", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:63343", allowCredentials = "true")
 @RequestMapping(path="api/v1/glovo")
 public class CustControl {
     private final CustServ custServ;
@@ -31,7 +31,7 @@ public class CustControl {
     public void patchCust(@PathVariable("customerId") Long customerId,@RequestBody Customer customer) {
         custServ.patchCust(customerId,customer);
     }
-    @PostMapping(path = "login")
+    /*@PostMapping(path = "login")
     public ResponseEntity<String> loginauth(@RequestBody Customer auth) {
         boolean aut=custServ.authoriz(auth.getLogin(),auth.getPassword());
         if(aut){
@@ -42,22 +42,7 @@ public class CustControl {
 
     }
 
-    @GetMapping("/Registration")
-    public String registrationPage() {
-        return "Registration";
-    }
-
-    @GetMapping("/login")
-    public String loginPage() {
-        return "Reg-Autorize";
-    }
-
-    @GetMapping("/Restaurants")
-    public String restaurantsPage() {
-        return "Restaurants";
-    }
-
-
+     */
 
 
 }

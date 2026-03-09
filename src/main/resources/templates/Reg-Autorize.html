@@ -65,23 +65,28 @@
 <body>
 <p class="Title_name">Glovocall</p>
 
-<div class="input-group">
-    <label for="loginInput">Login:</label>
-    <input type="text" id="loginInput" >
+<form action="/process-login" method="post">
+    <div class="input-group">
+        <label for="loginInput">Login:</label>
+        <input type="text" id="loginInput" name="login" required>
 
-    <label for="passInput">Password:</label>
-    <input type="password" id="passInput" >
-</div>
-
-<div class="Reg_Aut_butt_container">
-    <div class="Reg_Aut_buttons">
-        <button id="authBtn">Authorization</button>
-        <button onclick="RegTo()"> Registration </button>
+        <label for="passInput">Password:</label>
+        <input type="password" id="passInput" name="password" required>
     </div>
-</div>
-<script>function RegTo() {
-    window.location.href = "Registration";
-}</script>
-<script src="/DataToAPi.js"></script>
+
+    <div class="Reg_Aut_butt_container">
+        <div class="Reg_Aut_buttons">
+            <button type="submit">Authorization</button>
+        </div>
+    </div>
+</form>
+
+<button onclick="RegTo()"> Registration </button>
+
+<script>
+    function RegTo() {
+        window.location.href = "Registration";
+    }
+</script>
 </body>
 </html>

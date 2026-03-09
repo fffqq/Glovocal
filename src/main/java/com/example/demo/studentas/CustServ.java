@@ -25,16 +25,16 @@ public class CustServ {
 
     public void PostCust(Customer customer) {
         Optional<Customer> customerOptional = customerRepo.findByEmail(customer.getEmail());
-        Optional<Customer> customerOptional2=customerRepo.findByLogin(customer.getLogin());
-        if (customerOptional.isPresent()||customerOptional2.isPresent()) {
+        Optional<Customer> customerOptional2 = customerRepo.findByLogin(customer.getLogin());
+        if (customerOptional.isPresent() || customerOptional2.isPresent()) {
             throw new IllegalStateException("Email was taken or login");
         }
-        if (customer.getLogin()==null||customer.getLogin().isEmpty()||
-                customer.getPassword()==null||customer.getPassword().isEmpty()||
-                customer.getEmail()==null||customer.getEmail().isEmpty()) {
+        if (customer.getLogin() == null || customer.getLogin().isEmpty() ||
+                customer.getPassword() == null || customer.getPassword().isEmpty() ||
+                customer.getEmail() == null || customer.getEmail().isEmpty()) {
             throw new IllegalStateException("Email,login or password are empty");
         }
-        String passwordEnc=passwordEncoder.encode(customer.getPassword());
+        String passwordEnc = passwordEncoder.encode(customer.getPassword());
         customer.setPassword(passwordEnc);
         customerRepo.save(customer);
     }
@@ -91,31 +91,29 @@ public class CustServ {
         }
     }
 
-    /*public List<Cookie> authorized(String login,String password) {
-        Customer CheckCust=customerRepo.findByLogin(login)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong Login"));
-        String passwordCheckCust = CheckCust.getPassword();
-        if(passwordCheckCust!=null&&!passwordCheckCust.isEmpty()){
+    public List<Cookie> authorized(String login, String password) {
+        Customer CheckCust = customerRepo.findByLogin(login).orElse(null);
+        if (CheckCust != null) {
+            String passwordCheckCust = CheckCust.getPassword();
+            if (passwordCheckCust != null && !passwordCheckCust.isEmpty()) {
 
-            Cookie loginCookie=new Cookie("user_login",CheckCust.getLogin());
-            loginCookie.setMaxAge(60*60*24);
-            loginCookie.setPath("/");
+                Cookie loginCookie = new Cookie("user_login", CheckCust.getLogin());
+                loginCookie.setMaxAge(60 * 60 * 24);
+                loginCookie.setPath("/");
 
-            Cookie passwordCookie=new Cookie("user_password",CheckCust.getPassword());
-            passwordCookie.setMaxAge(60*60*24);
-            passwordCookie.setPath("/");
+                Cookie passwordCookie = new Cookie("user_password", CheckCust.getPassword());
+                passwordCookie.setMaxAge(60 * 60 * 24);
+                passwordCookie.setPath("/");
 
-            if(passwordEncoder.matches(password,passwordCheckCust)){
-                return List.of(loginCookie,passwordCookie);
+                if (passwordEncoder.matches(password, passwordCheckCust)) {
+                    return List.of(loginCookie, passwordCookie);
+                }
             }
-            else
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong password");
         }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Fill the password Box");
-        }
-*/
-
-
+        return List.of();
+    }
+}
+/*
    public boolean authoriz(String login,String password) {
        Customer CheckCust=customerRepo.findByLogin(login)
                .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong Login"));
@@ -126,6 +124,4 @@ public class CustServ {
            return false;
    }
 
-
-}
-
+*/
