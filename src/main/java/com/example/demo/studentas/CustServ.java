@@ -91,7 +91,7 @@ public class CustServ {
         }
     }
 
-   /* public List<Cookie> authorized(String login,String password) {
+    /*public List<Cookie> authorized(String login,String password) {
         Customer CheckCust=customerRepo.findByLogin(login)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong Login"));
         String passwordCheckCust = CheckCust.getPassword();
@@ -113,8 +113,10 @@ public class CustServ {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Fill the password Box");
         }
-        */
-   public boolean authorized(String login,String password) {
+*/
+
+
+   public boolean authoriz(String login,String password) {
        Customer CheckCust=customerRepo.findByLogin(login)
                .orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong Login"));
        if(passwordEncoder.matches(password,CheckCust.getPassword())){

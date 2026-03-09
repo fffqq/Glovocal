@@ -3,6 +3,7 @@ package com.example.demo.studentas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,13 +33,28 @@ public class CustControl {
     }
     @PostMapping(path = "login")
     public ResponseEntity<String> loginauth(@RequestBody Customer auth) {
-        boolean aut=custServ.authorized(auth.getLogin(),auth.getPassword());
+        boolean aut=custServ.authoriz(auth.getLogin(),auth.getPassword());
         if(aut){
             return ResponseEntity.ok("Authorized");
         }
         else
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Login or password");
 
+    }
+
+    @GetMapping("/Registration")
+    public String registrationPage() {
+        return "Registration";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "Reg-Autorize";
+    }
+
+    @GetMapping("/Restaurants")
+    public String restaurantsPage() {
+        return "Restaurants";
     }
 
 

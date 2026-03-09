@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaraunts</title>
+</head>
+<body>
+<p>Restaurants</p>
+
+</body>
+<script>
+    window.onload = async () => {
+    // Пробуем постучаться к защищенному бэкенду
+    const res = await fetch("http://localhost:8080/api/v1/glovo/check");
+    // Если кук нет, preHandle отправит 302 Redirect, 
+    // и fetch может упасть с ошибкой CORS, которую мы видели раньше
+};</script>
+</html>
