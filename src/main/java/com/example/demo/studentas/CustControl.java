@@ -31,18 +31,7 @@ public class CustControl {
     public void patchCust(@PathVariable("customerId") Long customerId,@RequestBody Customer customer) {
         custServ.patchCust(customerId,customer);
     }
-    /*@PostMapping(path = "login")
-    public ResponseEntity<String> loginauth(@RequestBody Customer auth) {
-        boolean aut=custServ.authoriz(auth.getLogin(),auth.getPassword());
-        if(aut){
-            return ResponseEntity.ok("Authorized");
-        }
-        else
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Login or password");
 
-    }
-
-     */
 
 
 }

@@ -39,12 +39,12 @@ public class CustomerConf implements WebMvcConfigurer {
                         "/process-login",
                         "/Registration",
                         "/Reg-Authorize",
-                        "/api/v1/glovo",       // РАЗРЕШАЕМ РЕГИСТРАЦИЮ
-                        "/api/v1/glovo/login", // РАЗРЕШАЕМ ЛОГИН
+                        "/api/v1/glovo",
+                        "/api/v1/glovo/login",
                         "/css/**",
                         "/js/**",
                         "/error",
-                        "/*.html",             // На всякий случай для статики
+                        "/*.html",
                         "/*.js"
                 );
     }
@@ -61,15 +61,15 @@ public class CustomerConf implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 1. Отключаем CSRF, иначе POST запросы от форм блокируются (403/302)
+
                 .csrf(csrf -> csrf.disable())
 
-                // 2. Разрешаем ВСЕМ доступ ко ВСЕМУ (пока ты не отладишь куки)
+
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
                 )
 
-                // 3. Отключаем стандартную форму логина Spring, чтобы она не мешала твоей
+
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
