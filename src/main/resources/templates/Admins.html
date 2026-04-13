@@ -61,12 +61,53 @@
         <td>
             <form th:action="@{/Admins/delete/{id}(id=${customer.id})}" method="post" style="display:inline;">
                 <button type="submit" class="btn-del" onclick="return confirm('Delete?')">Delete</button>
-                <a th:href="@{/Admins/edit/{id}(id=${customer.id})}" style="color: #3498db; text-decoration: none; margin-right: 10px;">Edit</a>
+                <a th:href="@{/Admins/edit/{id}(id=${customer.id})}" class="btn-upd">Edit</a>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
 
+<h2>List of Restaurants</h2>
+
+<div style="margin-bottom: 20px;">
+    <button onclick="document.getElementById('createResForm').style.display='block'">+ Add New Restaurant</button>
+</div>
+<div id="createResForm" style="display:none; background: #34495e; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+    <form th:action="@{/Admins/restaurants/create}" method="post">
+        <input type="text" name="name" placeholder="Restaurant Name" required style="margin-right: 5px;">
+        <input type="text" name="address" placeholder="Address" required style="margin-right: 5px;">
+        <input type="text" name="description" placeholder="Description" style="margin-right: 5px;">
+
+        <button type="submit">Save</button>
+        <button type="button" onclick="this.parentElement.parentElement.style.display='none'">Cancel</button>
+    </form>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="res : ${allRestaurants}">
+        <td th:text="${res.id}"></td>
+        <td th:text="${res.name}"></td>
+        <td th:text="${res.address}"></td>
+        <td th:text="${res.description}"></td>
+        <td>
+            <form th:action="@{/Admins/restaurants/delete/{id}(id=${res.id})}" method="post" style="display:inline;">
+                <button type="submit" class="btn-del" onclick="return confirm('Delete restaurant?')">Delete</button>
+                <a th:href="@{/Admins/restaurants/edit/{id}(id=${res.id})}" class="btn-upd">Edit</a>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
