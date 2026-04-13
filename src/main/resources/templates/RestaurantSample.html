@@ -2,9 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="@{RestaurantByID.name}" >Restaurants</title>
 </head>
-<body>
+<body style="background: #2c3e50; color: white; padding: 20px;">
 
+<h1 th:text="${RestaurantByID.name}">Name</h1>
+<p th:text="${RestaurantByID.description}">Description</p>
+<hr>
+
+<h3>Menu:</h3>
+<ul>
+    <li th:each="item : ${menuItems}">
+        <span th:text="${item.name}">Dishes</span>
+        — <b th:text="${item.price} + ' EUR'">Price</b>
+
+        <button>Order</button>
+    </li>
+</ul>
+
+<div th:if="${menuItems == null or #lists.isEmpty(menuItems)}">
+    <p>There is no dishes here</p>
+</div>
+
+<br>
+<a href="/Restaurants" style="color: lightblue;">Back</a>
 </body>
 </html>

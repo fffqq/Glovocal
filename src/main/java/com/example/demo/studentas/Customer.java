@@ -16,6 +16,8 @@ public class Customer {
             strategy = GenerationType.SEQUENCE,generator = "customer_sequence"
     )
     private Long id;
+    @Column(name = "role", nullable = false)
+    private String role = "CUSTOMER";
     @Column(name = "login", nullable = false, unique = true)
     private String login;
     @Column(name = "password", nullable = false)
@@ -36,7 +38,9 @@ public class Customer {
     }
     public void setLogin(String login){this.login=login;}//seters
 
-    public void setEmail(String email){this.email=email;}//setters
+    public void setEmail(String email){this.email=email;}
+    public void setRole(String role) { this.role = role; }
+    //setters
 
     public void setPassword(String password){this.password=password;}//getters
 
@@ -46,7 +50,9 @@ public class Customer {
 
     public String getPassword(){return password;}
 
-    public Long getId(){return id;}//getters
+    public Long getId(){return id;}
+
+    public String getRole() { return role; }//getters
 
 
 

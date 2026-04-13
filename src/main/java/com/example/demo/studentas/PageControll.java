@@ -24,9 +24,4 @@ public class PageControll {
         return "Reg-Autorize";
     }
 
-    @GetMapping("/Restaurants")
-    public String restaurantsPage(Model model) {
-            model.addAttribute("allRestaurants", repo.findAll());
-            return "Restaurants";
-    }
 }

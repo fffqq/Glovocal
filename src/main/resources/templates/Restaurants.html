@@ -13,10 +13,10 @@
     <li th:each="restaurant:${allRestaurants}" >
         <a th:href="@{/Restaurants/{id}(id=${restaurant.id})}"
 
-           th:text="${restaurant.name}">Название ресторана</a>
+           th:text="${restaurant.name}">Name of Restaurant</a>
 
 
-        <span th:text="' - ' + ${restaurant.address}">Адрес</span>
+        <span th:text="' - ' + ${restaurant.address}">Address</span>
 
 
 

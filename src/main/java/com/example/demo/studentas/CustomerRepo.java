@@ -16,6 +16,7 @@ import javax.swing.text.html.Option;
 public interface CustomerRepo extends JpaRepository<Customer,Long> {
     @Query("SELECT c from Customer c where c.email=?1")
     Optional<Customer> findByEmail(String email);
+    Optional<Customer> findById(Long id);
 
     @Query("SELECT c from Customer c where c.login=:login")
     Optional<Customer> findByLogin(String login);
@@ -24,6 +25,9 @@ public interface CustomerRepo extends JpaRepository<Customer,Long> {
     boolean existsByEmail(String email);
     boolean existsByLogin(String login);
     boolean existsByPassword(String password);
+
+    @Override
+    List<Customer> findAll();
 
 
     // List<Customer> login(String login);

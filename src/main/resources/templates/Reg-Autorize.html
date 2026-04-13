@@ -81,11 +81,39 @@
     </div>
 </form>
 
+<div class="Reg_Aut_butt_container">
+    <div class="Reg_Aut_buttons">
 <button onclick="RegTo()"> Registration </button>
+    </div>
+</div>
+
+
+<div class="Reg_Aut_butt_container">
+    <div class="Reg_Aut_buttons">
+        <button onclick="AdminTo()"> Admin </button>
+    </div>
+</div>
+
+
+<div class="Reg_Aut_butt_container">
+    <div class="Reg_Aut_buttons">
+        <button onclick="DriverTo()"> Driver </button>
+    </div>
+</div>
 
 <script>
     function RegTo() {
         window.location.href = "Registration";
+    }
+</script>
+<script>
+    function AdminTo() {
+        window.location.href = "Admins";
+    }
+</script>
+<script>
+    function DriverTo() {
+        window.location.href = "Drivers";
     }
 </script>
 </body>

@@ -10,7 +10,7 @@ public class RestaurantsConfig {
     @Bean
     CommandLineRunner commandLineRunner1(RestaurantRepo repo) {
         return args -> {
-            RestaurantEntity mcdonalds = new RestaurantEntity();
+           /* RestaurantEntity mcdonalds = new RestaurantEntity();
             mcdonalds.setName("Mcdonalds");
             mcdonalds.setAddress("Kareivu g.15");
             mcdonalds.setDescription("Rygalovka american food");
@@ -18,6 +18,8 @@ public class RestaurantsConfig {
             System.out.println(mcdonalds.getId()+"Id Restorana");
             List<RestaurantEntity> found = repo.findallByName(mcdonalds.getName());
             found.forEach(r -> System.out.println("Найден: " + r.getName() + " по адресу " + r.getAddress()));
-        };
+
+        */};
+
     }
 }

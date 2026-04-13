@@ -49,7 +49,7 @@ public class CustomerConf implements WebMvcConfigurer {
                 );
     }
 
-    @Bean
+   /* @Bean
     CommandLineRunner commandLineRunner(CustomerRepo repo) {
         return args -> {
             Customer Pindor = new Customer("fdds", passwordEncoder().encode("pipa"), "va2007321@gmdsaail.com");
@@ -58,6 +58,8 @@ public class CustomerConf implements WebMvcConfigurer {
             repo.saveAll(List.of(Pindos, Podnos, Pindor));
         };
     }
+
+    */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

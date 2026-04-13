@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; color: white; }
+        th, td { border: 1px solid #444; padding: 10px; text-align: left; }
+        body { background-color: #2c3e50; color: white; font-family: sans-serif; }
+        .btn-del { color: #ff6b6b; }
+        .btn-upd { color: #f1c40f; }
+    </style>
+</head>
+<body>
+<h2>List of Users</h2>
+
+<div style="margin-bottom: 20px;">
+    <button onclick="document.getElementById('createForm').style.display='block'">+ Create New User</button>
+</div>
+
+<div id="createForm" style="display:none; background: #34495e; padding: 15px; margin-bottom: 20px;">
+    <form th:action="@{/Admins/create}" method="post">
+        <input type="text" name="login" placeholder="Login" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <select name="role">
+            <option value="CUSTOMER">CUSTOMER</option>
+            <option value="DRIVER">DRIVER</option>
+            <option value="ADMIN">ADMIN</option>
+        </select>
+        <button type="submit">Save</button>
+        <button type="button" onclick="this.parentElement.parentElement.style.display='none'">Cancel</button>
+    </form>
+</div>
+
+<table>
+    <thead>
+    <tr>
+
+        <th>ID</th>
+        <th>Login</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="customer : ${allCustomers}">
+        <td th:text="${customer.id}"></td>
+        <td th:text="${customer.login}"></td>
+        <td th:text="${customer.email}"></td>
+        <td>
+            <form th:action="@{/Admins/update-role/{id}(id=${customer.id})}" method="post">
+                <select name="role" onchange="this.form.submit()">
+                    <option th:value="CUSTOMER" th:selected="${customer.role == 'CUSTOMER'}">CUSTOMER</option>
+                    <option th:value="DRIVER" th:selected="${customer.role == 'DRIVER'}">DRIVER</option>
+                    <option th:value="ADMIN" th:selected="${customer.role == 'ADMIN'}">ADMIN</option>
+                </select>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/Admins/delete/{id}(id=${customer.id})}" method="post" style="display:inline;">
+                <button type="submit" class="btn-del" onclick="return confirm('Delete?')">Delete</button>
+                <a th:href="@{/Admins/edit/{id}(id=${customer.id})}" style="color: #3498db; text-decoration: none; margin-right: 10px;">Edit</a>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
