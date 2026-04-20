@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои заказы</title>
+</head>
+<body style="background: #2c3e50; color: white; padding: 20px;">
+
+<h1>History of your orders</h1>
+<hr>
+
+<h2 style="color: white; font-family: Arial, sans-serif;">Active Orders (SENT)</h2>
+<table border="1" style="width: 100%; border-collapse: collapse; text-align: left; background-color: #2c3e50; color: white; font-family: Arial, sans-serif;">
+    <thead>
+    <tr style="background-color: #34495e;">
+        <th style="padding: 10px;">ID Order</th>
+        <th style="padding: 10px;">Restaurant</th>
+        <th style="padding: 10px;">Status</th>
+        <th style="padding: 10px;">Price</th>
+        <th style="padding: 10px;">Actions</th> </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}" th:if="${order.status == 'SENT'}">
+        <td style="padding: 10px;" th:text="${order.id}"></td>
+        <td style="padding: 10px; color: #ffcc00; font-weight: bold;" th:text="${order.restaurantName}"></td>
+        <td style="padding: 10px;" th:text="${order.status}"></td>
+        <td style="padding: 10px;" th:text="${order.totalPrice} + ' €'"></td>
+
+        <td style="padding: 10px;">
+            <a th:href="@{/my-orders/edit/{id}(id=${order.id})}"
+               style="background: #3498db; color: white; padding: 5px 10px; text-decoration: none; border-radius: 3px; margin-right: 5px; font-size: 0.9em;">
+                Edit
+            </a>
+
+            <a th:href="@{/my-orders/delivered/{id}(id=${order.id})}"
+               style="background: #e67e22; color: white; padding: 5px 10px; text-decoration: none; border-radius: 3px; font-size: 0.9em;"
+               onclick="return confirm('Confirm the order?')">
+                Delivered
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br><br>
+<h2 style="color: #bdc3c7; font-family: Arial, sans-serif;">Order History (Read-only)</h2>
+<table border="1" style="width: 100%; border-collapse: collapse; text-align: left; background-color: #34495e; color: #bdc3c7; font-family: Arial, sans-serif; opacity: 0.9;">
+    <thead>
+    <tr style="background-color: #2c3e50;">
+        <th style="padding: 10px;">ID Order</th>
+        <th style="padding: 10px;">Restaurant</th>
+        <th style="padding: 10px;">Status</th>
+        <th style="padding: 10px;">Price</th>
+        <th style="padding: 10px;">Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}" th:if="${order.status == 'DELIVERED'}">
+        <td style="padding: 10px;" th:text="${order.id}"></td>
+        <td style="padding: 10px;" th:text="${order.restaurantName}"></td>
+        <td style="padding: 10px; color: #2ecc71;" th:text="${order.status}"></td>
+        <td style="padding: 10px;" th:text="${order.totalPrice} + ' €'"></td>
+        <td style="padding: 10px;">
+            <a th:href="@{/my-orders/edit/{id}(id=${order.id})}"
+               style="background: #7f8c8d; color: white; padding: 5px 15px; text-decoration: none; border-radius: 3px; font-size: 0.9em;">
+                Read
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<br>
+<a href="/Restaurants" style="color: lightblue;">Back to the restaurants</a>
+
+
+
+
+</body>
+</html>

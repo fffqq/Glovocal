@@ -24,7 +24,7 @@ public class RestaurantController {
     @GetMapping({"/Restaurants/{RestaurantsId}"})
     public String RestaurantSample(@PathVariable("RestaurantsId")Long id,Model model){
         var res=repo.findById(id).orElse(null);
-        var menu=Mrepo.findAllById(id);
+        var menu=Mrepo.findAllByRestaurantId(id);
         model.addAttribute("RestaurantByID",res);
         model.addAttribute("menuItems", menu);
         return "RestaurantSample";

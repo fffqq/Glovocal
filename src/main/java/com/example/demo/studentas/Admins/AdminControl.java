@@ -5,12 +5,16 @@ import com.example.demo.studentas.Customer;
 import com.example.demo.studentas.CustomerRepo;
 import com.example.demo.studentas.MenuItems.Menu;
 import com.example.demo.studentas.MenuItems.MenuRepo;
+import com.example.demo.studentas.Order.OrderEntity;
+import com.example.demo.studentas.Order.OrderServices;
 import com.example.demo.studentas.Restaurants.RestaurantEntity;
 import com.example.demo.studentas.Restaurants.RestaurantInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class AdminControl {
@@ -20,17 +24,28 @@ public class AdminControl {
     private final MenuRepo Mrepo;
     @Autowired
     private final AdminServices adminServices;
-    public AdminControl(CustomerRepo repo,CustServ custServ,RestaurantInterface restaurantInterface,MenuRepo Mrepo,AdminServices adminServices){
+    private final OrderServices orderServices;
+    public AdminControl(OrderServices orderServices,CustomerRepo repo,CustServ custServ,RestaurantInterface restaurantInterface,MenuRepo Mrepo,AdminServices adminServices){
         this.repo=repo;
         this.custServ=custServ;
         this.restaurantInterface=restaurantInterface;
         this.Mrepo=Mrepo;
         this.adminServices=adminServices;
+        this.orderServices=orderServices;
     }
     @GetMapping("/Admins")
     public String restaurantsPage(Model model) {
         model.addAttribute("allCustomers", repo.findAll());
         model.addAttribute("allRestaurants",restaurantInterface.findAll());
+        List<OrderEntity> allOrders = adminServices.getAllOrders();
+        for (OrderEntity order : allOrders) {
+            if (order.getRestaurantId() != null) {
+                restaurantInterface.findById(order.getRestaurantId())
+                        .ifPresent(r -> order.setRestaurantName(r.getName()));
+            }
+        }
+
+        model.addAttribute("orders", allOrders);
         return "Admins";
 
     }
@@ -90,6 +105,14 @@ public class AdminControl {
         model.addAttribute("menuItems", menu);
         return "edit-restaurant";
     }
+    @PostMapping("/Admins/restaurants/update/{id}")
+    public String updateRestaurant(@PathVariable("id") Long id,
+                                   @ModelAttribute("restaurant") RestaurantEntity restaurant) {
+
+        restaurantInterface.save(restaurant);
+        return "redirect:/Admins";
+    }
+
 
     @PostMapping("/Admins/restaurants/edit/{resId}/delete/{itemId}")
     public String deleteMenuItem(@PathVariable Long resId, @PathVariable Long itemId) {
@@ -120,5 +143,11 @@ public class AdminControl {
                                  @RequestParam Double price) {
         adminServices.updateItem(itemId, name, price);
         return "redirect:/Admins/restaurants/edit/" + resId;
+    }
+
+    @GetMapping("/Admins/orders/delete/{id}")
+    public String deleteOrder(@PathVariable Long id) {
+        orderServices.deleteOrderWithItems(id);
+        return "redirect:/Admins";
     }
 }

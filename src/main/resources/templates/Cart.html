@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Menu Item</title>
+    <style>
+        body { background-color: #2c3e50; color: white; font-family: sans-serif; padding: 50px; }
+        .form-container { background: #34495e; padding: 20px; border-radius: 8px; width: 300px; margin: 0 auto; }
+        input { display: block; width: 100%; margin-bottom: 15px; padding: 10px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #27ae60; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div th:each="item : ${session.cart.items}">
+    <span th:text="${item.itemName}"></span> —
+    <span th:text="${item.quantity}"></span> шт. —
+    <span th:text="${item.price * item.quantity}"></span> €
+</div>
+<h3>Итого: <span th:text="${session.cart.totalPrice}"></span> €</h3>
+
+<form th:action="@{/order/confirm}" method="post">
+    <button type="submit">Confirm Order</button>
+</form>
+
+</body>
+</html>

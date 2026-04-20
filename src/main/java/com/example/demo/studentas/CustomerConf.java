@@ -1,5 +1,7 @@
 package com.example.demo.studentas;
 
+import com.example.demo.studentas.Admins.AdminCookie;
+import com.example.demo.studentas.driver.DriverCookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,10 @@ import java.util.List;
 public class CustomerConf implements WebMvcConfigurer {
     @Autowired
     private FilterCoockie filterCoockie;
+    @Autowired
+    private AdminCookie adminIterceptor;
+    @Autowired
+    private DriverCookie driverInterceptor;
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -47,19 +53,21 @@ public class CustomerConf implements WebMvcConfigurer {
                         "/*.html",
                         "/*.js"
                 );
+        registry.addInterceptor(adminIterceptor).addPathPatterns("/Admins/**");
+        registry.addInterceptor(driverInterceptor).addPathPatterns("/Drivers/**");
     }
 
-   /* @Bean
-    CommandLineRunner commandLineRunner(CustomerRepo repo) {
-        return args -> {
-            Customer Pindor = new Customer("fdds", passwordEncoder().encode("pipa"), "va2007321@gmdsaail.com");
-            Customer Pindos = new Customer("fddfds", passwordEncoder().encode("pipa"), "va2007sdsa321@gmail.com");
-            Customer Podnos = new Customer("Bo", passwordEncoder().encode("pipa"), "va20073dsa1@gmail.com");
-            repo.saveAll(List.of(Pindos, Podnos, Pindor));
-        };
-    }
+    /* @Bean
+     CommandLineRunner commandLineRunner(CustomerRepo repo) {
+         return args -> {
+             Customer Pindor = new Customer("fdds", passwordEncoder().encode("pipa"), "va2007321@gmdsaail.com");
+             Customer Pindos = new Customer("fddfds", passwordEncoder().encode("pipa"), "va2007sdsa321@gmail.com");
+             Customer Podnos = new Customer("Bo", passwordEncoder().encode("pipa"), "va20073dsa1@gmail.com");
+             repo.saveAll(List.of(Pindos, Podnos, Pindor));
+         };
+     }
 
-    */
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -78,4 +86,3 @@ public class CustomerConf implements WebMvcConfigurer {
         return http.build();
     }
 }
-

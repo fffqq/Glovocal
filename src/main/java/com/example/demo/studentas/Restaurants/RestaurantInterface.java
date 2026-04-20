@@ -10,4 +10,5 @@ public interface RestaurantInterface  {
     Optional <RestaurantEntity> findById(Long id);
     List<RestaurantEntity>findAll();
 
+    void save(RestaurantEntity existing);
 }

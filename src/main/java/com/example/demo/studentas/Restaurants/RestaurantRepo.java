@@ -128,4 +128,27 @@ public class RestaurantRepo implements RestaurantInterface {
         }
         return returnRestoraunt;
     }
+    @Override
+    public void save(RestaurantEntity restaurant) {
+
+        String sql = "UPDATE restaurants SET name = ?, address = ?, description = ? WHERE id = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+
+            ps.setString(1, restaurant.getName());
+            ps.setString(2, restaurant.getAddress());
+            ps.setString(3, restaurant.getDescription());
+            ps.setLong(4, restaurant.getId());
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("Updating restaurant failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating restaurant with id: " + restaurant.getId(), e);
+        }
+    }
 }

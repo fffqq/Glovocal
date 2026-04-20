@@ -109,5 +109,46 @@
     </tr>
     </tbody>
 </table>
+
+
+<div style="margin-top: 50px; padding: 20px; background-color: #34495e; border-radius: 10px; font-family: Arial, sans-serif;">
+    <h2 style="color: #ecf0f1; border-bottom: 2px solid #e74c3c; padding-bottom: 10px;">Global Orders Management (Admin)</h2>
+
+    <table border="1" style="width: 100%; border-collapse: collapse; text-align: left; color: white; margin-top: 20px;">
+        <thead>
+        <tr style="background-color: #2c3e50;">
+            <th style="padding: 12px;">ID</th>
+            <th style="padding: 12px;">Customer ID</th>
+            <th style="padding: 12px;">Restaurant</th>
+            <th style="padding: 12px;">Status</th>
+            <th style="padding: 12px;">Total Price</th>
+            <th style="padding: 12px; text-align: center;">Control</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td style="padding: 10px; border-bottom: 1px solid #455a64;" th:text="${order.id}"></td>
+            <td style="padding: 10px; border-bottom: 1px solid #455a64;" th:text="${order.customerId}"></td>
+            <td style="padding: 10px; border-bottom: 1px solid #455a64; color: #ffcc00;" th:text="${order.restaurantName}"></td>
+            <td style="padding: 10px; border-bottom: 1px solid #455a64;">
+                    <span th:text="${order.status}"
+                          th:style="${order.status == 'DELIVERED' ? 'color: #2ecc71' : 'color: #3498db'}"></span>
+            </td>
+            <td style="padding: 10px; border-bottom: 1px solid #455a64;" th:text="${order.totalPrice} + ' €'"></td>
+
+            <td style="padding: 10px; border-bottom: 1px solid #455a64; text-align: center;">
+                <a th:href="@{/my-orders/edit/{id}(id=${order.id})}"
+                   style="color: #3498db; text-decoration: none; margin-right: 15px; font-weight: bold;">EDIT</a>
+
+                <a th:href="@{/Admins/orders/delete/{id}(id=${order.id})}"
+                   style="color: #e74c3c; text-decoration: none; font-weight: bold;"
+                   onclick="return confirm('WARNING: Are you sure you want to PERMANENTLY delete this order?')">
+                    DELETE
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

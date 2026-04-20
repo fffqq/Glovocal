@@ -1,5 +1,7 @@
-package com.example.demo.studentas;
+package com.example.demo.studentas.Admins;
 
+import com.example.demo.studentas.Customer;
+import com.example.demo.studentas.CustomerRepo;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +14,7 @@ import java.util.Optional;
 
 @Component
 @EnableWebSecurity
-public class FilterCoockie implements HandlerInterceptor {
+public class AdminCookie implements HandlerInterceptor {
 
     @Autowired
     private CustomerRepo customerRepo;
@@ -34,11 +36,16 @@ public class FilterCoockie implements HandlerInterceptor {
         if (logCookie!=null && pasCookie!=null) {
             Optional<Customer> chekCust = customerRepo.findByLogin(logCookie);
 
-            if (chekCust.isPresent() && chekCust.get().getPassword().equals(pasCookie)) {
+            if (chekCust.isPresent() && chekCust.get().getPassword().equals(pasCookie)
+                    && "ADMIN".equals(chekCust.get().getRole())) {
                 return true;
             }
         }
         response.sendRedirect("/login");
         return false;
     }
+
 }
+
+
+

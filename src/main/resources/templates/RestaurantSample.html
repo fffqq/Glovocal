@@ -16,7 +16,9 @@
         <span th:text="${item.name}">Dishes</span>
         — <b th:text="${item.price} + ' EUR'">Price</b>
 
-        <button>Order</button>
+        <form th:action="@{/cart/add/{id}(id=${item.id})}" method="post" style="display:inline;">
+            <button type="submit">add to cart</button>
+        </form>
     </li>
 </ul>
 
@@ -26,5 +28,12 @@
 
 <br>
 <a href="/Restaurants" style="color: lightblue;">Back</a>
+
+
+<div style="margin-top: 30px; border-top: 1px solid #555; padding-top: 20px;">
+    <a href="/Cart" style="background-color: #f1c40f; color: #2c3e50; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+        Go to cart
+    </a>
+</div>
 </body>
 </html>

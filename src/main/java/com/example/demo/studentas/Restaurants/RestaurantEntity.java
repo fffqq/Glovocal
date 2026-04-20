@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 @Setter
 @Getter
 public class RestaurantEntity {
-    @Setter(AccessLevel.PACKAGE)
     private Long id;
     private String name;
     private String address;
